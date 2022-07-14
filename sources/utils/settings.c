@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 14:18:11 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/29 14:18:11 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/07/13 19:56:37 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,21 @@ static void	init_struct(t_philos *data)
 	data->die = 0;
 	data->eat = 0;
 	data->sleep = 0;
-	data->time_eat = 0;
+	data->meals = 0;
+	data->all_full = 0;
+	data->dead_already = 0;
 }
 
 static int	check_digit(char *line)
 {
-	int	j;
+	int	i;
 
-	j = 0;
-	while (line[j])
+	i = 0;
+	while (line[i])
 	{
-		if (ft_isdigit(line[j]) == 0)
+		if (ft_isdigit(line[i]) == 0)
 			return (1);
-		j++;
+		i++;
 	}
 	return (0);
 }
@@ -50,7 +52,7 @@ static int	convert_values(t_philos *data, char **argv, int i)
 	else if (i == 4)
 		data->sleep = ft_atoi(argv[i]);
 	else if (i == 5)
-		data->time_eat = ft_atoi(argv[i]);
+		data->meals = ft_atoi(argv[i]);
 	else
 		return (1);
 	return (0);
@@ -59,7 +61,6 @@ static int	convert_values(t_philos *data, char **argv, int i)
 int	check_args(char **argv, t_philos *data)
 {
 	int	i;
-	int	j;
 
 	init_struct(data);
 	i = 1;

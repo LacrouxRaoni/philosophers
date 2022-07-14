@@ -12,6 +12,9 @@ RM	=	rm -rf
 SRC_FILES	=	philosophers.c \
 				$(UTILS)settings.c \
 				$(UTILS)creat_list.c \
+				$(UTILS)free_list.c \
+				$(UTILS)get_time.c \
+				$(UTILS)print_message.c\
 				$(UTILS)ft_atoi.c \
 				$(UTILS)ft_isdigit.c \
 				$(UTILS)ft_strchr.c

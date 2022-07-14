@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 14:15:27 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/29 17:43:03 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/07/14 18:34:47 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,60 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 
-typedef struct s_philos
+typedef struct s_routine
 {
-	int	philos;
-	int	die;
-	int	eat;
-	int	sleep;
-	int	time_eat;
-}	t_philos;
+	int 		time_to_eat;
+	int			time_to_sleep;
+	int			time_to_die;
+	int			philos;
+	long int	start_meal;
+	int			meals;
+} t_routine;
 
 typedef struct s_list
 {
 	pthread_t		philo;
+	int				id;
+	pthread_mutex_t	*fork_left;
+	pthread_mutex_t	*fork_right;
+	pthread_mutex_t	*print_message;
+	long int		last_meal;
+	t_routine		routine;
+	int				*philo_is_dead;
+	int				*meals_n;
 	struct s_list	*previous;
 	struct s_list	*next;
 }	t_list;
 
+
+typedef struct s_philos
+{
+	int			philos;
+	int			die;
+	int			eat;
+	int			sleep;
+	int			meals;
+	int			all_full;
+	pthread_mutex_t	*chopstick;
+	pthread_mutex_t	print_status_mutex;
+	pthread_t	checker;
+	int			dead_already;
+
+	
+	t_list	*list;
+}	t_philos;
+
+
+
 int		check_args(char **argv, t_philos *data);
-int		creat_list(t_philos *data, t_list **list);
+int		creat_list(t_philos *data);
+void	free_list(t_philos *data);
 int		ft_atoi(const char *nptr);
 int		ft_isdigit(int c);
 char	*ft_strchr(const char *s, int c);
+long int		get_time(void);
+void	print_message(char *message, long int now, long int start_meal, t_list *node);
 
 #endif

@@ -6,48 +6,54 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 14:15:44 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/06/29 14:17:24 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/07/14 10:09:02 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-static void	connect_node(t_list *last, t_list *node,
-		t_list **list, t_philos *data)
+static void	link_node(t_list *last, t_list *node, t_philos *data)
 {
-	last = (*list);
+	last = data->list;
 	while (last->next != NULL)
 		last = last->next;
 	last->next = node;
 	node->previous = last;
-	if (node->philo == data->philos)
+	if (node->id == data->philos)
 	{
-		node->next = (*list);
-		(*list)->previous = node;
+		node->next = data->list;
+		data->list->previous = node;
 	}
 }
 
-int	creat_list(t_philos *data, t_list **list)
+int	creat_list(t_philos *data)
 {
 	int		i;
 	t_list	*node;
 	t_list	*last;
 
-	(*list) = NULL;
+	data->list = NULL;
 	node = NULL;
+	last = NULL;
 	i = 1;
 	while (i <= data->philos)
 	{
 		node = (t_list *)malloc(sizeof(t_list));
 		if (!node)
 			return (1);
-		node->philo = i;
+		node->id = i;
+		node->last_meal = 0;
+		node->meals_n = &data->all_full;
+		node->fork_left = NULL;
+		node->fork_right = NULL;
+		node->print_message = NULL;
+		node->philo_is_dead = &data->dead_already;
 		node->next = NULL;
 		node->previous = NULL;
-		if ((*list) == NULL)
-			(*list) = node;
+		if (data->list == NULL)
+			data->list = node;
 		else
-			connect_node(last, node, list, data);
+			link_node(last, node, data);
 		i++;
 	}
 	return (0);
