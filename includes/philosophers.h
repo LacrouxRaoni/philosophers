@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 14:15:27 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/07/14 18:34:47 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/07/18 10:53:15 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ typedef struct s_list
 	long int		last_meal;
 	t_routine		routine;
 	int				*philo_is_dead;
-	int				*meals_n;
+	int				*full;
+	int				full_flag;
 	struct s_list	*previous;
 	struct s_list	*next;
 }	t_list;
@@ -64,7 +65,7 @@ typedef struct s_philos
 
 
 
-int		check_args(char **argv, t_philos *data);
+int		check_args(char **argv, t_philos *data, int argc);
 int		creat_list(t_philos *data);
 void	free_list(t_philos *data);
 int		ft_atoi(const char *nptr);

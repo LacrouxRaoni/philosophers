@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 14:18:11 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/07/13 19:56:37 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/07/18 10:47:24 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	check_digit(char *line)
 	return (0);
 }
 
-static int	convert_values(t_philos *data, char **argv, int i)
+static int	convert_values(t_philos *data, char **argv, int i, int argc)
 {
 	if (i == 1)
 	{
@@ -52,13 +52,16 @@ static int	convert_values(t_philos *data, char **argv, int i)
 	else if (i == 4)
 		data->sleep = ft_atoi(argv[i]);
 	else if (i == 5)
-		data->meals = ft_atoi(argv[i]);
+	{
+		if (argc == 6)
+			data->meals = ft_atoi(argv[i]);
+	}
 	else
 		return (1);
 	return (0);
 }
 
-int	check_args(char **argv, t_philos *data)
+int	check_args(char **argv, t_philos *data, int argc)
 {
 	int	i;
 
@@ -68,7 +71,7 @@ int	check_args(char **argv, t_philos *data)
 	{
 		if (check_digit(argv[i]) == 0)
 		{	
-			if (convert_values(data, argv, i) == 1)
+			if (convert_values(data, argv, i, argc) == 1)
 				return (1);
 		}
 		else

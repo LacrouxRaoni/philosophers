@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 14:19:10 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/07/14 18:43:35 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/07/18 12:43:55 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,21 @@ void	*is_dead(void *arg)
 		while (++i < data->philos)
 		{
 			now = (get_time() - data->list->routine.start_meal);
-			//printf ("philo %d tempo now %ld \n", node->id, now - node->last_meal);
-
-			if (now - node->last_meal > data->die)
+			if (node->full_flag == 0)
 			{
-				print_message("is dead", get_time(), node->routine.start_meal, node);
-				data->dead_already = 1;
+				if (now - node->last_meal > data->die)
+				{
+					print_message("died", get_time(), node->routine.start_meal, node);
+					data->dead_already = 1;
+				}
 			}
 			if (node->next != NULL)
 				node = node->next;
 		}
-		if (data->dead_already == 1 || data->all_full == data->meals)
+		if (data->dead_already == 1 || data->all_full == data->philos)
+		{
 			break ;
+		}
 	}
 }
 
@@ -49,7 +52,7 @@ void	*die_philo(t_list *node)
 	node->last_meal = get_time();
 	print_message("has taken a fork", get_time(), node->routine.start_meal, node);
 	usleep(node->routine.time_to_die * 1000);
-	print_message("is dead aqui", get_time(), node->routine.start_meal, node);
+	print_message("died", get_time(), node->routine.start_meal, node);
 	pthread_mutex_unlock(node->fork_right);
 	return (NULL);
 }
@@ -71,6 +74,19 @@ void	*lunch(void *arg)
 			usleep(1600);
 		while (1)
 		{
+			if (node->routine.meals == 0)
+				i = 1;
+			if (node->routine.meals == i || (*node->philo_is_dead) == 1)
+			{
+				(*node->full) += 1;
+				node->full_flag = 1;
+				if ((*node->philo_is_dead) == 1)
+					printf ("morre philo da puta %d\n", node->id);
+				else
+					printf ("philo %d -comi %dx\n", node->id, i);
+				break ;
+			}	
+
 			//time_to_eat
 			if (node->id % 2 == 0)
 			{
@@ -93,9 +109,6 @@ void	*lunch(void *arg)
 			pthread_mutex_unlock(node->fork_left);
 			pthread_mutex_unlock(node->fork_right);
 
-			
-			
-			
 			//time_to_sleep
 			print_message("is sleeping", get_time(), node->routine.start_meal, node);
 			usleep(node->routine.time_to_sleep * 1000);
@@ -104,18 +117,10 @@ void	*lunch(void *arg)
 			
 			//time_to_think
 			print_message("is thinking", get_time(), node->routine.start_meal, node);
-			if (node->routine.time_to_die - (node->routine.time_to_eat + node->routine.time_to_sleep) > 1000)
-				usleep (((node->routine.time_to_die - (node->routine.time_to_eat + node->routine.time_to_sleep) * 1000) - 500));	
-			if (node->routine.meals == i || (*node->philo_is_dead) == 1)
-			{
-				if ((*node->philo_is_dead) == 1)
-					printf ("morre philo da puta %d\n", node->id);
-				else
-					printf ("philo %d -comi %dx\n", node->id, i);
-				break ;
-			}
+			if (node->routine.time_to_die - (node->routine.time_to_eat + node->routine.time_to_sleep) > 20)
+				usleep(((node->routine.time_to_die - (node->routine.time_to_eat + node->routine.time_to_sleep)) * 1000) - (20 * 1000));
+
 		}
-		(*node->meals_n) += 1;	
 	}
 	return (NULL);
 }
@@ -233,10 +238,14 @@ void init_philo(t_philos *data)
 	creat_threads(node, data);
 	
 	//check_if_it's dead
-	pthread_create(&data->checker, NULL, is_dead, (void *)data);
-	//is_dead(data, node);
+	if (data->philos > 1)
+	{
+		pthread_create(&data->checker, NULL, is_dead, (void *)data);
+	}
 	
 	wait_thread_routines(node, data);
+	if (data->philos > 1)
+		pthread_join(data->checker, NULL);
 }
 
 void	init_forks(t_philos *data)
@@ -258,7 +267,7 @@ int	main(int argc, char *argv[])
 
 	if (argc > 3 && argc < 7)
 	{
-		if (check_args(argv, &data) == 1)
+		if (check_args(argv, &data, argc) == 1)
 		{
 			printf ("invalid arguments\n");
 			return (1);
