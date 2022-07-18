@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 14:19:10 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/07/18 12:43:55 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/07/18 12:52:21 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*is_dead(void *arg)
 		}
 		if (data->dead_already == 1 || data->all_full == data->philos)
 		{
-			break ;
+			return (NULL);
 		}
 	}
 }
@@ -226,7 +226,6 @@ void wait_thread_routines(t_list *node, t_philos *data)
 void init_philo(t_philos *data)
 {
 	t_list *node;
-	int	i;
 	
 	node = data->list;
 	pick_forks(node, data);

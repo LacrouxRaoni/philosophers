@@ -5,7 +5,7 @@ UTILS	=	utils/
 PATH_OBJ	=	objects
 
 CC	=	gcc
-#CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror
 THREAD	=	-pthread
 RM	=	rm -rf
 
