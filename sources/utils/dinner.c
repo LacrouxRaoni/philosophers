@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 20:53:53 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/07/18 21:36:46 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/07/19 12:16:51 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@ int	check_table(t_list *node, int i)
 	{
 		(*node->full) += 1;
 		node->full_flag = 1;
-		if ((*node->philo_is_dead) == 1)
-			printf ("morre philo da puta %d\n", node->id);
-		else
-			printf ("philo %d -comi %dx\n", node->id, i);
 		return (1);
 	}
 	return (0);
