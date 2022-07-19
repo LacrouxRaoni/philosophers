@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_message.c                                    :+:      :+:    :+:   */
+/*   clean_table.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/06 17:45:13 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/07/18 21:24:25 by rruiz-la         ###   ########.fr       */
+/*   Created: 2022/07/18 20:21:25 by rruiz-la          #+#    #+#             */
+/*   Updated: 2022/07/18 21:39:45 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	print_message(char *message, long int now,
-		long int start_meal, t_list *node)
+void	wait_thread_routines(t_list *node, t_philos *data)
 {
-	pthread_mutex_lock(node->print_message);
-	if ((*node->philo_is_dead) == 0)
-		printf ("%ld philo %d %s\n", now - start_meal, node->id, message);
-	pthread_mutex_unlock(node->print_message);
+	int	i;	
+
+	if (data->philos == 1)
+		pthread_join(node->philo, NULL);
+	else
+	{
+		i = -1;
+		while (++i < data->philos)
+		{
+			pthread_join(node->philo, NULL);
+			node = node->next;
+		}
+	}
 }

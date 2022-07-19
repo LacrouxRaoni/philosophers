@@ -10,11 +10,15 @@ THREAD	=	-pthread
 RM	=	rm -rf
 
 SRC_FILES	=	philosophers.c \
+				$(UTILS)prepare_table.c \
+				$(UTILS)clean_table.c \
 				$(UTILS)settings.c \
 				$(UTILS)creat_list.c \
 				$(UTILS)free_list.c \
 				$(UTILS)get_time.c \
-				$(UTILS)print_message.c\
+				$(UTILS)print_message.c \
+				$(UTILS)dinner.c \
+				$(UTILS)dead.c \
 				$(UTILS)ft_atoi.c \
 				$(UTILS)ft_isdigit.c \
 				$(UTILS)ft_strchr.c
