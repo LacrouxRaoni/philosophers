@@ -6,7 +6,7 @@
 /*   By: rruiz-la <rruiz-la@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 20:59:57 by rruiz-la          #+#    #+#             */
-/*   Updated: 2022/07/18 21:20:58 by rruiz-la         ###   ########.fr       */
+/*   Updated: 2022/07/20 10:20:25 by rruiz-la         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	*is_dead(void *arg)
 	node = data->list;
 	while (1)
 	{
-		usleep (500);
+		usleep (200);
 		i = -1;
 		while (++i < data->philos)
 			check_philos_heart(data, node);
